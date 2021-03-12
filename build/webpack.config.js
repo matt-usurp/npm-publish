@@ -16,7 +16,6 @@ console.dir({
 module.exports = {
   mode: 'production',
   target: 'node',
-  devtool: false,
 
   entry: {
     main: input,
@@ -32,9 +31,6 @@ module.exports = {
     minimize: false,
     emitOnErrors: true,
     usedExports: true,
-    runtimeChunk: {
-      name: 'runtime',
-    },
   },
 
   module: {
