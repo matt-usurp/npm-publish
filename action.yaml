@@ -44,11 +44,11 @@ inputs:
       Ignore this value and output will be printed.
       Otherwise provide a boolean truthy value.
 
-  dry:
+  execute:
     required: false
     description: |
-      The action will run the publish command with the dry run flag.
-      Ignore this value and all commands will be ran as expected.
+      The commands will be ran instead of the staging/dry-run mode by default.
+      This is required to explicitly execute the commands as publishing can be messy otherwise.
       Otherwise provide a boolean truthy value.
 
 outputs:

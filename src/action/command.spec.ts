@@ -12,6 +12,7 @@ describe('src/action/command.ts', (): void => {
           '--no-git-tag-version',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       };
@@ -19,11 +20,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         version({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: '',
           access: PublishAccess.Public,
           silent: false,
-          dry: false,
+          execute: false,
         })
       ).toStrictEqual(expected);
     });
@@ -37,6 +38,7 @@ describe('src/action/command.ts', (): void => {
           '--no-git-tag-version',
         ],
         options: {
+          cwd: undefined,
           silent: true,
         },
       };
@@ -44,11 +46,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         version({
           version: '2.3',
-          directory: '',
+          directory: undefined,
           tag: '',
           access: PublishAccess.Public,
           silent: true,
-          dry: false,
+          execute: false,
         })
       ).toStrictEqual(expected);
     });
@@ -63,6 +65,7 @@ describe('src/action/command.ts', (): void => {
           '--tag', 'latest',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       };
@@ -70,11 +73,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
           silent: false,
-          dry: false,
+          execute: true,
         })
       ).toStrictEqual(expected);
     });
@@ -83,11 +86,11 @@ describe('src/action/command.ts', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
-          'build/workspace',
           '--access', 'public',
           '--tag', 'latest',
         ],
         options: {
+          cwd: 'build/workspace',
           silent: false,
         },
       };
@@ -99,7 +102,7 @@ describe('src/action/command.ts', (): void => {
           tag: 'latest',
           access: PublishAccess.Public,
           silent: false,
-          dry: false,
+          execute: true,
         })
       ).toStrictEqual(expected);
     });
@@ -113,6 +116,7 @@ describe('src/action/command.ts', (): void => {
           '--dry-run',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       };
@@ -120,11 +124,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
           silent: false,
-          dry: true,
+          execute: false,
         })
       ).toStrictEqual(expected);
     });
@@ -137,6 +141,7 @@ describe('src/action/command.ts', (): void => {
           '--tag', 'latest',
         ],
         options: {
+          cwd: undefined,
           silent: true,
         },
       };
@@ -144,11 +149,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
           silent: true,
-          dry: false,
+          execute: true,
         })
       ).toStrictEqual(expected);
     });
@@ -161,6 +166,7 @@ describe('src/action/command.ts', (): void => {
           '--tag', 'beta',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       };
@@ -168,11 +174,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: 'beta',
           access: PublishAccess.Public,
           silent: false,
-          dry: false,
+          execute: true,
         })
       ).toStrictEqual(expected);
     });
@@ -185,6 +191,7 @@ describe('src/action/command.ts', (): void => {
           '--tag', 'latest',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       };
@@ -192,11 +199,11 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
-          directory: '',
+          directory: undefined,
           tag: 'latest',
           access: PublishAccess.Private,
           silent: false,
-          dry: false,
+          execute: true,
         })
       ).toStrictEqual(expected);
     });
@@ -212,6 +219,7 @@ describe('src/action/command.ts', (): void => {
             '--no-git-tag-version',
           ],
           options: {
+            cwd: undefined,
             silent: false,
           },
         })
@@ -227,6 +235,7 @@ describe('src/action/command.ts', (): void => {
             '--tag', 'latest',
           ],
           options: {
+            cwd: undefined,
             silent: false,
           },
         })
@@ -243,6 +252,7 @@ describe('src/action/command.ts', (): void => {
           '--tag', 'latest',
         ],
         options: {
+          cwd: undefined,
           silent: false,
         },
       });

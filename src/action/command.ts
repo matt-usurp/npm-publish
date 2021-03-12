@@ -2,6 +2,7 @@ import { exec } from '@actions/exec';
 import { ActionOptions } from './options';
 
 export type CommandOptions = {
+  cwd: string | undefined;
   silent: boolean;
 };
 
@@ -25,6 +26,7 @@ export function version(options: ActionOptions): Command {
     command: 'npm version',
     arguments: flags,
     options: {
+      cwd: options.directory,
       silent: options.silent,
     },
   };
@@ -39,7 +41,7 @@ export function publish(options: ActionOptions): Command {
   flags.push('--access', options.access);
   flags.push('--tag', options.tag);
 
-  if (options.dry === true) {
+  if (options.execute === false) {
     flags.push('--dry-run');
   }
 
@@ -47,6 +49,7 @@ export function publish(options: ActionOptions): Command {
     command: 'npm publish',
     arguments: flags,
     options: {
+      cwd: options.directory,
       silent: options.silent,
     },
   };
@@ -82,7 +85,13 @@ The command in question:
   }
 }
 
-export async function execute(command: Command): Promise<void> {
+export async function execute(options: ActionOptions, command: Command): Promise<void> {
+  // The version command does not have a dry run, so we cannot safely execute this command.
+  // Therefore we will ignore it, this could be an "all command" thing, but dry run on publish is useful.
+  if (command.command === 'npm version' && options.execute === false) {
+    return;
+  }
+
   const code = await exec(
     command.command,
     command.arguments,

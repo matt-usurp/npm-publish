@@ -26,10 +26,14 @@ code.fix:
 # --
 
 .PHONY: \
-	test
+	test \
+	test.build
 
 test:
 	npx jest --verbose
+
+test.build:
+	INPUT_VERSION="v1.2.3" node build/action/bundle.main.js
 
 # --
 # -- Build

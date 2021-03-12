@@ -8,7 +8,7 @@ export type InputActionOptions = {
   tag: string;
   private: string;
   silent: string;
-  dry: string;
+  execute: string;
 };
 
 export enum PublishAccess {
@@ -18,11 +18,11 @@ export enum PublishAccess {
 
 export type ActionOptions = {
   version: string;
-  directory: string;
+  directory: string | undefined;
   tag: string;
   access: PublishAccess;
   silent: boolean;
-  dry: boolean;
+  execute: boolean;
 };
 
 export function normalise(input: InputActionOptions): ActionOptions {
@@ -32,7 +32,7 @@ export function normalise(input: InputActionOptions): ActionOptions {
     access: normalisePublishAccess(normaliseBoolean(input.private)),
     tag: normaliseDistributionTag(input.tag),
     silent: normaliseBoolean(input.silent),
-    dry: normaliseBoolean(input.dry),
+    execute: normaliseBoolean(input.execute),
   };
 }
 
@@ -44,7 +44,11 @@ export function normaliseVersion(value: string): string {
   return value;
 }
 
-export function normaliseDirectory(value: string): string {
+export function normaliseDirectory(value: string): string | undefined {
+  if (value === '') {
+    return undefined;
+  }
+
   return value;
 }
 

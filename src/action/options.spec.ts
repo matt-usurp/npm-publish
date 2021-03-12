@@ -9,7 +9,7 @@ describe('src/action/options.ts', (): void => {
         tag: 'latest',
         access: PublishAccess.Public,
         silent: false,
-        dry: false,
+        execute: false,
       };
 
       expect(
@@ -19,7 +19,7 @@ describe('src/action/options.ts', (): void => {
           tag: '',
           private: '',
           silent: '',
-          dry: '',
+          execute: '',
         })
       ).toStrictEqual(expected);
     });
@@ -31,7 +31,7 @@ describe('src/action/options.ts', (): void => {
         tag: 'latest',
         access: PublishAccess.Public,
         silent: false,
-        dry: true,
+        execute: true,
       };
 
       expect(
@@ -41,7 +41,7 @@ describe('src/action/options.ts', (): void => {
           tag: '',
           private: '',
           silent: '',
-          dry: 'true',
+          execute: 'true',
         })
       ).toStrictEqual(expected);
     });
@@ -74,8 +74,11 @@ describe('src/action/options.ts', (): void => {
   });
 
   describe('normaliseDirectory()', (): void => {
-    it('directory passed through', (): void => {
-      expect(normaliseDirectory('')).toStrictEqual('');
+    it('with blank directory, return undefined', (): void => {
+      expect(normaliseDirectory('')).toStrictEqual(undefined);
+    });
+
+    it('with directory value, return directory', (): void => {
       expect(normaliseDirectory('build')).toStrictEqual('build');
       expect(normaliseDirectory('dist')).toStrictEqual('dist');
     });
