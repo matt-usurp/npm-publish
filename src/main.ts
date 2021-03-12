@@ -2,7 +2,7 @@ import core from '@actions/core';
 import { execute, publish, version } from './action/command';
 import { normalise } from './action/options';
 
-const main = async(): Promise<void> => {
+export async function main(): Promise<void> {
   try {
     const options = normalise({
       version: core.getInput('version', { required: true }),
@@ -20,6 +20,6 @@ const main = async(): Promise<void> => {
   } catch (error) {
     core.setFailed(error);
   }
-};
+}
 
 main();

@@ -5,6 +5,10 @@ branding:
   color: purple
   icon: briefcase
 
+runs:
+  using: node12
+  main: build/action/bundle.main.js
+
 inputs:
   version:
     required: true
@@ -52,7 +56,3 @@ outputs:
     description: |
       The version used to publish the package.
       This value has been stripped of any prefixes and is a raw semver string.
-
-runs:
-  using: node12
-  main: build/action/main.js

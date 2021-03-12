@@ -1,38 +1,37 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "esnext",
     "target": "esnext",
     "jsx": "react",
-
-    "outDir": "build/workspace",
 
     "strict": true,
     "alwaysStrict": true,
 
     "allowJs": false,
     "checkJs": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "resolveJsonModule": true,
-    "removeComments": false,
-    "declaration": true,
+    "removeComments": true,
+    "declaration": false,
 
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": false,
 
+    "noEmit": true,
     "noErrorTruncation": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noEmit": false,
 
     "keyofStringsOnly": true,
   },
 
   "include": [
     "src",
+    "build/action",
 
     ".eslintrc.js",
     "commitlint.config.js",
@@ -42,5 +41,6 @@
 
   "exclude": [
     "node_modules",
-  ]
+    "build/workspace",
+  ],
 }

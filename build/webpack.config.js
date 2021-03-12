@@ -1,7 +1,8 @@
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const input = path.resolve(root, 'src/main.ts');
+
+const input = path.resolve(root, 'build/workspace/main.js');
 const output = path.resolve(root, 'build/action');
 
 console.dir({
@@ -13,9 +14,9 @@ console.dir({
 })
 
 module.exports = {
-  mode: 'development',
-  devtool: 'source-map',
+  mode: 'production',
   target: 'node',
+  devtool: false,
 
   entry: {
     main: input,
@@ -23,21 +24,17 @@ module.exports = {
 
   output: {
     path: output,
-    filename: 'main.js',
+    filename: 'bundle.[name].js',
     clean: true,
   },
 
-  // resolve: {
-  //   fallback: {
-  //     fs: false,
-  //     os: false,
-  //     path: false,
-  //   },
-  // },
-
   optimization: {
-    minimize: true,
+    minimize: false,
+    emitOnErrors: true,
     usedExports: true,
+    runtimeChunk: {
+      name: 'runtime',
+    },
   },
 
   module: {
@@ -46,12 +43,6 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
-      },
-
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
       },
     ],
   },

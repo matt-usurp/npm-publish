@@ -36,7 +36,37 @@ test:
 # --
 
 .PHONY: \
-	build
+	build \
+	build.clean \
+	build.tsc \
+	build.tsc.clean \
+	build.webpack \
+	build.webpack.clean
 
-build:
-	npx webpack --config build/webpack.config.js
+build: \
+	build.clean \
+	build.tsc \
+	build.tsc.clean \
+	build.webpack \
+	build.webpack.clean
+
+build.clean:
+	rm -rf build/workspace
+	mkdir -p build/workspace
+
+build.tsc:
+	npx tsc --project build/tsconfig.json
+
+build.tsc.clean:
+	find build/workspace -type f -name "*.spec.js" -delete
+	find build/workspace -type f -name "*.spec.js.map" -delete
+	find build/workspace -type f -name "*.spec.d.ts" -delete
+
+build.webpack:
+	npx webpack \
+		--config build/webpack.config.js \
+		--color \
+		--stats
+
+build.webpack.clean:
+	find build/action -type f -name "*.txt" -delete
