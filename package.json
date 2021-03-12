@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "name": "@matt-usurp/npm-publish",
-  "description": "A GitHub action for publishing artibary package versions to NPM",
+  "description": "A GitHub action for publishing arbitrary package versions to NPM",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matt-usurp/npm-publish.git"

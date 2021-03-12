@@ -1,0 +1,58 @@
+name: NPM Publish Package
+description: An action for publishing arbitrary package versions to NPM.
+author: Matthew Usurp
+branding:
+  color: purple
+  icon: briefcase
+
+inputs:
+  version:
+    required: true
+    description: |
+      The version you wish to publish.
+      This should be a semvar compliant version string with or without the "v" prefix.
+
+  directory:
+    required: false
+    description: |
+      The directory of the package that you wish to publish.
+      This can be ignored if you are publishing the repository root.
+      Ensure a "package.json" can be found in this directory.
+
+  tag:
+    required: false
+    description: |
+      This is the distribution tag for NPM usage.
+      Ignore this value and it will default to "latest" as expected.
+      Otherwise provide the development channel you wish this to be tagged as.
+
+  private:
+    required: false
+    description: |
+      This is the access flag for the package when publishing.
+      Ignore this value and it will default to "public" as expected.
+      Otherwise provide a boolean truthy value and "private" will be used instead.
+
+  silent:
+    required: false
+    description: |
+      The action will silence the outputs of all the commands executed.
+      Ignore this value and output will be printed.
+      Otherwise provide a boolean truthy value.
+
+  dry:
+    required: false
+    description: |
+      The action will run the publish command with the dry run flag.
+      Ignore this value and all commands will be ran as expected.
+      Otherwise provide a boolean truthy value.
+
+outputs:
+  version:
+    description: |
+      The version used to publish the package.
+      This value has been stripped of any prefixes and is a raw semver string.
+
+runs:
+  using: node12
+  main: build/action/main.js
