@@ -26,7 +26,7 @@ export async function main(logger: LoggerFunction | undefined): Promise<void> {
       version: input('version', { required: true }),
       directory: input('directory'),
       tag: input('tag'),
-      private: input('private'),
+      access: input('private'),
       silent: input('silent'),
       execute: input('execute'),
     });

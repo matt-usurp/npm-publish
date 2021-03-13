@@ -15,6 +15,7 @@ inputs:
     description: |
       The version you wish to publish.
       This should be a semvar compliant version string with or without the "v" prefix.
+      Optionally this can be a "git-ref" path where the final segment is a semver compliant version string.
 
   directory:
     required: false
@@ -26,16 +27,16 @@ inputs:
   tag:
     required: false
     description: |
-      This is the distribution tag for NPM usage.
+      This is the "npm-dist-tag" mentioned in the official documentation.
       Ignore this value and it will default to "latest" as expected.
       Otherwise provide the development channel you wish this to be tagged as.
 
-  private:
+  access:
     required: false
     description: |
-      This is the access flag for the package when publishing.
+      This is the "npm-access" mentioned in the official documentation.
       Ignore this value and it will default to "public" as expected.
-      Otherwise provide a boolean truthy value and "private" will be used instead.
+      Otherwise provide the string "private" to make a private package.
 
   silent:
     required: false
