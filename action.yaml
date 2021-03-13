@@ -1,6 +1,7 @@
-name: NPM Publish Package
-description: An action for publishing arbitrary package versions to NPM.
+name: Publish Package Version (NPM)
+description: An action for publishing NPM packages with a specified version or against a given tag.
 author: Matthew Usurp
+
 branding:
   color: purple
   icon: briefcase
