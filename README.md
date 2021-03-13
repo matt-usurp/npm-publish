@@ -1,4 +1,4 @@
-# Simplistic NPM Package publishing
+# Easy Package Publishing (for NPM)
 
 Publish packages to NPM with a specified `version`.
 
