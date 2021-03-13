@@ -2344,7 +2344,18 @@ var __webpack_exports__ = {};
 var core = __webpack_require__(225);
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __webpack_require__(27);
+;// CONCATENATED MODULE: ./build/workspace/action/logger.js
+const logger_reset = '\u001b[0m';
+const cyan = '\u001b[36m';
+const yellow = '\u001b[33m';
+function header(message) {
+  return `${yellow}:> ${cyan}${message}${logger_reset}`;
+}
+function keypair(key, value) {
+  return `${logger_reset}${key}: ${yellow}${value}${logger_reset}`;
+}
 ;// CONCATENATED MODULE: ./build/workspace/action/command.js
+
 
 function version(options) {
   const flags = [];
@@ -2356,6 +2367,7 @@ function version(options) {
     arguments: flags,
     options: {
       cwd: options.directory,
+      env: undefined,
       silent: options.silent
     }
   };
@@ -2374,6 +2386,9 @@ function publish(options) {
     arguments: flags,
     options: {
       cwd: options.directory,
+      env: {
+        'NODE_AUTH_TOKEN': options.token
+      },
       silent: options.silent
     }
   };
@@ -2399,13 +2414,17 @@ The command in question:
 
 }
 async function execute(logger, options, command) {
-  logger(`Executing: ${compose(command)}`);
+  logger(keypair('command', compose(command)));
 
   if (command.command === 'npm version' && options.execute === false) {
     return;
   }
 
-  const code = await (0,exec.exec)(command.command, command.arguments, command.options);
+  const code = await (0,exec.exec)(command.command, command.arguments, { ...command.options,
+    env: { ...command.options.env,
+      ...process.env
+    }
+  });
 
   if (code === 0) {
     return;
@@ -2428,6 +2447,7 @@ var PublishAccess;
 function normalise(input) {
   return {
     version: normaliseVersion(input.version),
+    token: input.token,
     directory: normaliseDirectory(input.directory),
     access: normalisePublishAccess(input.access),
     tag: normaliseDistributionTag(input.tag),
@@ -2475,26 +2495,15 @@ function normaliseBoolean(value) {
 
 
 
-const colours = {
-  reset: '\u001b[0m',
-  header: '\u001b[36m',
-  value: '\u001b[32m',
-  symbol: '\u001b[33m'
-};
-
-const header = message => {
-  return `${colours.symbol}:> ${colours.header}${message}${colours.reset}`;
-};
-
-const keypair = (key, value) => {
-  return `${colours.reset}${key}: ${colours.value}${value}${colours.reset}`;
-};
 
 async function main(logger) {
   try {
     let print = logger;
     const options = normalise({
       version: (0,core.getInput)('version', {
+        required: true
+      }),
+      token: (0,core.getInput)('token', {
         required: true
       }),
       directory: (0,core.getInput)('directory'),
@@ -2512,6 +2521,7 @@ async function main(logger) {
 
     print(header('Action options'));
     print(keypair('version', options.version));
+    print(keypair('token', `${options.token.substr(0, 4)}********`));
     print(keypair('directory', options.directory ?? '.'));
     print(keypair('access', options.access));
     print(keypair('distribution', options.tag));
