@@ -2497,6 +2497,8 @@ function normaliseBoolean(value) {
 
 
 async function main(logger) {
+  var _a;
+
   try {
     let print = logger;
     const options = normalise({
@@ -2521,7 +2523,7 @@ async function main(logger) {
 
     print(header('Action options'));
     print(keypair('version', options.version));
-    print(keypair('directory', options.directory ?? '.'));
+    print(keypair('directory', (_a = options.directory) !== null && _a !== void 0 ? _a : '.'));
     print(keypair('access', options.access));
     print(keypair('distribution', options.tag));
     print(keypair('execute', options.execute ? 'true' : 'false'));
