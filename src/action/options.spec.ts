@@ -1,10 +1,11 @@
+import valid from 'semver/functions/valid';
 import { ActionOptions, normalise, normaliseBoolean, normaliseDirectory, normaliseDistributionTag, normalisePublishAccess, normaliseVersion, PublishAccess } from './options';
 
 describe('src/action/options.ts', (): void => {
   describe('normalise()', (): void => {
     it('can normalise basic arguments', (): void => {
       const expected: ActionOptions = {
-        version: '1.0',
+        version: '1.0.0',
         directory: 'build',
         tag: 'latest',
         access: PublishAccess.Public,
@@ -48,28 +49,73 @@ describe('src/action/options.ts', (): void => {
   });
 
   describe('normaliseVersion()', (): void => {
-    it('with no version prefix, return version', (): void => {
-      expect(normaliseVersion('1')).toStrictEqual('1');
-      expect(normaliseVersion('2')).toStrictEqual('2');
+    type VersionTestCase = [
+      value: string,
+      expected: string,
+    ];
 
-      expect(normaliseVersion('1.0')).toStrictEqual('1.0');
-      expect(normaliseVersion('1.2')).toStrictEqual('1.2');
-      expect(normaliseVersion('2.3')).toStrictEqual('2.3');
+    it.each<VersionTestCase>([
+      ['1', '1.0.0'],
+      ['2', '2.0.0'],
+      ['3', '3.0.0'],
 
-      expect(normaliseVersion('1.0.0')).toStrictEqual('1.0.0');
-      expect(normaliseVersion('1.2.3')).toStrictEqual('1.2.3');
+      ['1.0', '1.0.0'],
+      ['1.1', '1.1.0'],
+      ['3.4', '3.4.0'],
+
+      ['1.0.0', '1.0.0'],
+      ['1.2.3', '1.2.3'],
+      ['3.4.2', '3.4.2'],
+    ])('with version %s, without prefix', (value, expected): void => {
+      expect(normaliseVersion(value)).toStrictEqual(expected);
     });
 
-    it('with version prefix, return version without prefix', (): void => {
-      expect(normaliseVersion('v1')).toStrictEqual('1');
-      expect(normaliseVersion('v2')).toStrictEqual('2');
+    it.each<VersionTestCase>([
+      ['v1', '1.0.0'],
+      ['v2', '2.0.0'],
+      ['v3', '3.0.0'],
 
-      expect(normaliseVersion('v1.0')).toStrictEqual('1.0');
-      expect(normaliseVersion('v1.2')).toStrictEqual('1.2');
-      expect(normaliseVersion('v2.3')).toStrictEqual('2.3');
+      ['v1.0', '1.0.0'],
+      ['v1.1', '1.1.0'],
+      ['v3.4', '3.4.0'],
 
-      expect(normaliseVersion('v1.0.0')).toStrictEqual('1.0.0');
-      expect(normaliseVersion('v1.2.3')).toStrictEqual('1.2.3');
+      ['v1.0.0', '1.0.0'],
+      ['v1.2.3', '1.2.3'],
+      ['v3.4.2', '3.4.2'],
+    ])('with version %s, with prefix', (value, expected): void => {
+      expect(normaliseVersion(value)).toStrictEqual(expected);
+    });
+
+    it.each<VersionTestCase>([
+      ['refs/tags/1', '1.0.0'],
+      ['refs/tags/2', '2.0.0'],
+      ['refs/tags/3', '3.0.0'],
+
+      ['refs/tags/1.0', '1.0.0'],
+      ['refs/tags/1.1', '1.1.0'],
+      ['refs/tags/3.4', '3.4.0'],
+
+      ['refs/tags/1.0.0', '1.0.0'],
+      ['refs/tags/1.2.3', '1.2.3'],
+      ['refs/tags/3.4.2', '3.4.2'],
+    ])('with version %s, as ref, without prefix', (value, expected): void => {
+      expect(normaliseVersion(value)).toStrictEqual(expected);
+    });
+
+    it.each<VersionTestCase>([
+      ['refs/tags/v1', '1.0.0'],
+      ['refs/tags/v2', '2.0.0'],
+      ['refs/tags/v3', '3.0.0'],
+
+      ['refs/tags/v1.0', '1.0.0'],
+      ['refs/tags/v1.1', '1.1.0'],
+      ['refs/tags/v3.4', '3.4.0'],
+
+      ['refs/tags/v1.0.0', '1.0.0'],
+      ['refs/tags/v1.2.3', '1.2.3'],
+      ['refs/tags/v3.4.2', '3.4.2'],
+    ])('with version %s, as ref, with prefix', (value, expected): void => {
+      expect(normaliseVersion(value)).toStrictEqual(expected);
     });
   });
 

@@ -1,3 +1,6 @@
+import clean from 'semver/functions/clean';
+import coerce from 'semver/functions/coerce';
+
 /**
  * All inputs are passed to the action through environment variables.
  * Meaning they will always be strings and maybe empty.
@@ -37,11 +40,14 @@ export function normalise(input: InputActionOptions): ActionOptions {
 }
 
 export function normaliseVersion(value: string): string {
-  if (value.startsWith('v') === true) {
-    return value.substr(1);
+  const refless = value.replace(/^refs\/tags\/v/, '');
+  const cleaned = coerce(refless);
+
+  if (cleaned === null) {
+    throw new Error(`The version "${refless}" is not a valid semver version`);
   }
 
-  return value;
+  return cleaned.format();
 }
 
 export function normaliseDirectory(value: string): string | undefined {
