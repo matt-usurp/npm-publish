@@ -1,4 +1,5 @@
 import { exec } from '@actions/exec';
+import { LoggerFunction } from './logger';
 import { ActionOptions } from './options';
 
 export type CommandOptions = {
@@ -85,7 +86,9 @@ The command in question:
   }
 }
 
-export async function execute(options: ActionOptions, command: Command): Promise<void> {
+export async function execute(logger: LoggerFunction, options: ActionOptions, command: Command): Promise<void> {
+  logger(`Executing: ${compose(command)}`);
+
   // The version command does not have a dry run, so we cannot safely execute this command.
   // Therefore we will ignore it, this could be an "all command" thing, but dry run on publish is useful.
   if (command.command === 'npm version' && options.execute === false) {

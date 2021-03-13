@@ -33,7 +33,7 @@ test:
 	npx jest --verbose
 
 test.build:
-	INPUT_VERSION="v1.2.3" node build/action/bundle.main.js
+	INPUT_VERSION="v1.2.3" INPUT_DIRECTORY="build/workspace" node build/action/bundle.main.js
 
 # --
 # -- Build

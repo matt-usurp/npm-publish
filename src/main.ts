@@ -1,5 +1,6 @@
 import { getInput as input, setFailed as fail, setOutput as output, info } from '@actions/core';
 import { execute, publish, version } from './action/command';
+import { LoggerFunction } from './action/logger';
 import { normalise } from './action/options';
 
 const colours = {
@@ -17,9 +18,9 @@ const keypair = (key: string, value: string): string => {
   return `${colours.reset}${key}: ${colours.value}${value}${colours.reset}`;
 };
 
-export async function main(): Promise<void> {
+export async function main(logger: LoggerFunction | undefined): Promise<void> {
   try {
-    info(header('Welcome to the NPM publish pacage action!'));
+    let print = logger;
 
     const options = normalise({
       version: input('version', { required: true }),
@@ -30,20 +31,27 @@ export async function main(): Promise<void> {
       execute: input('execute'),
     });
 
-    info(header('Resolved options:'));
-    info(keypair('version', options.version));
-    info(keypair('access', options.access));
-    info(keypair('distribution', options.tag));
-    info(keypair('execute', options.execute ? 'true' : 'false'));
-    info(keypair('silent', options.execute ? 'true' : 'false'));
+    if (options.silent === true || print === undefined) {
+      print = () => {
+        return;
+      };
+    }
 
-    info(header('Version update'));
-    await execute(options, version(options));
+    print(header('Action options'));
+    print(keypair('version', options.version));
+    print(keypair('directory', options.directory ?? '.'));
+    print(keypair('access', options.access));
+    print(keypair('distribution', options.tag));
+    print(keypair('execute', options.execute ? 'true' : 'false'));
+    print(keypair('silent', options.execute ? 'true' : 'false'));
 
-    info(header('Publish package'));
-    await execute(options, publish(options));
+    print(header('Executing version update'));
+    await execute(print, options, version(options));
 
-    info(header('Done!'));
+    print(header('Executig package publication'));
+    await execute(print, options, publish(options));
+
+    print(header('Action complete!'));
 
     output('version', options.version);
   } catch (error) {
@@ -51,4 +59,4 @@ export async function main(): Promise<void> {
   }
 }
 
-main();
+main(info);
