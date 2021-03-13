@@ -53,7 +53,7 @@ inputs:
   execute:
     required: false
     description: |
-      The commands will be ran instead of the staging/dry-run mode by default.
+      The publish command will be ran instead of the staging/dry-run mode by default.
       This is required to explicitly execute the commands as publishing can be messy otherwise.
       Otherwise provide a boolean truthy value.
 

@@ -2415,11 +2415,6 @@ The command in question:
 }
 async function execute(logger, options, command) {
   logger(keypair('command', compose(command)));
-
-  if (command.command === 'npm version' && options.execute === false) {
-    return;
-  }
-
   const code = await (0,exec.exec)(command.command, command.arguments, { ...command.options,
     env: { ...command.options.env,
       ...process.env

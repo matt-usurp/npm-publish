@@ -60,7 +60,7 @@ You can configure the action with the following parameters:
 | `tag` | `string` | `false` | `latest` | The [npm-dist-tag](https://docs.npmjs.com/cli/v7/commands/npm-dist-tag) to be used |
 | `access` | `string` | `false` | `public` | The [npm-access](https://docs.npmjs.com/cli/v7/commands/npm-access) to be used |
 | `silent` | `boolean` | `false` | `false` | If command output should be silenced |
-| `execute` | `boolean` | `false` | `false` | If the command should actually be ran, default is to dry run commands |
+| `execute` | `boolean` | `false` | `false` | If the publish command should actually be ran, default is to dry run |
 
 > The `boolean` type represents a value that is boolean truthy when evaluated.
 > For a `true` value, use the string `"true"` or `1`, all other values will represent `false`.
@@ -113,3 +113,7 @@ with:
 ```
 
 Because of this, the `execute` parameter is not mentioned in any examples or use-cases.
+
+> Note that even though the `execute` parameter is set to `false` the version change is still ran.
+> This `execute` parameter only affects the `npm publish` command.
+> This will leave the `package.json` (and lock) in a dirty state for any following commands.

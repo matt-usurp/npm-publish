@@ -94,12 +94,6 @@ The command in question:
 export async function execute(logger: LoggerFunction, options: ActionOptions, command: Command): Promise<void> {
   logger(keypair('command', compose(command)));
 
-  // The version command does not have a dry run, so we cannot safely execute this command.
-  // Therefore we will ignore it, this could be an "all command" thing, but dry run on publish is useful.
-  if (command.command === 'npm version' && options.execute === false) {
-    return;
-  }
-
   const code = await exec(
     command.command,
     command.arguments,
