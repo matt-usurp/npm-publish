@@ -63,6 +63,15 @@ You can configure the action with the following parameters:
 > The `boolean` type represents a value that is boolean truthy when evaluated.
 > For a `true` value, use the string `"true"` or `1`, all other values will represent `false`.
 
+The follow are available through `steps.<id>.outputs` when the action has completed.
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `version` | `string` | The version used for publishing |
+
+> The `version` output will be normalised and cleansed.
+> Passing a `git-ref` will always result in the `version` being the semvar string.
+
 ### Version parameter in-depth
 
 The `version` parameter can be a semver compliant version string or a [git-ref](https://git-scm.com/book/en/v2/Git-Internals-Git-References) for a tag.
