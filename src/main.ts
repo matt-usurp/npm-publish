@@ -25,7 +25,6 @@ export async function main(logger: LoggerFunction | undefined): Promise<void> {
 
     print(header('Action options'));
     print(keypair('version', options.version));
-    print(keypair('token', `${options.token.substr(0, 4)}********`));
     print(keypair('directory', options.directory ?? '.'));
     print(keypair('access', options.access));
     print(keypair('distribution', options.tag));
