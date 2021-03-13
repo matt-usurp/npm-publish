@@ -1,4 +1,4 @@
-name: Publish Package Version (NPM)
+name: NPM Publish Version
 description: An action for publishing NPM packages with a specified version or against a given tag.
 author: Matthew Usurp
 
