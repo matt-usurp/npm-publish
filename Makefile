@@ -1,4 +1,27 @@
 # --
+# -- Change Log
+# --
+
+# The dependencies here are not installed in the package.json.
+# Instead we just use npx to download as needed.
+# Do not want to bloat the package file as it increases CI times.
+
+.PHONY: \
+	changelog \
+	changelog.proof
+
+changelog:
+	npx standard-version \
+		--skip.commit \
+		--skip.tag
+
+changelog.proof:
+	npx standard-version \
+		--skip.commit \
+		--skip.tag \
+		--dry-run
+
+# --
 # -- Code Formatting & Linting
 # --
 
