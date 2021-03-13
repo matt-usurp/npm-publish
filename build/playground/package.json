@@ -1,0 +1,6 @@
+{
+  "version": "0.1.0",
+  "name": "@example/playground",
+  "description": "A non-existent package for testing the npm-publish action on",
+  "license": "MIT"
+}
