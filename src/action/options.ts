@@ -1,4 +1,3 @@
-import clean from 'semver/functions/clean';
 import coerce from 'semver/functions/coerce';
 
 /**
@@ -9,7 +8,7 @@ export type InputActionOptions = {
   version: string;
   directory: string;
   tag: string;
-  private: string;
+  access: string;
   silent: string;
   execute: string;
 };
@@ -32,7 +31,7 @@ export function normalise(input: InputActionOptions): ActionOptions {
   return {
     version: normaliseVersion(input.version),
     directory: normaliseDirectory(input.directory),
-    access: normalisePublishAccess(normaliseBoolean(input.private)),
+    access: normalisePublishAccess(input.access),
     tag: normaliseDistributionTag(input.tag),
     silent: normaliseBoolean(input.silent),
     execute: normaliseBoolean(input.execute),
@@ -62,10 +61,18 @@ export function normaliseDistributionTag(value: string): string {
   return value || 'latest';
 }
 
-export function normalisePublishAccess(value: boolean): PublishAccess {
-  return value === true
-    ? PublishAccess.Private
-    : PublishAccess.Public;
+export function normalisePublishAccess(value: string): PublishAccess {
+  switch (value) {
+    case '':
+      return PublishAccess.Public;
+
+    case PublishAccess.Public:
+    case PublishAccess.Private:
+      return value;
+
+    default:
+      throw new Error(`The npm-access tag "${value}" is not valid, please us "public" or "private"`);
+  }
 }
 
 export function normaliseBoolean(value: string): boolean {

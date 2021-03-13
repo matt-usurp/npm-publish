@@ -1,4 +1,3 @@
-import valid from 'semver/functions/valid';
 import { ActionOptions, normalise, normaliseBoolean, normaliseDirectory, normaliseDistributionTag, normalisePublishAccess, normaliseVersion, PublishAccess } from './options';
 
 describe('src/action/options.ts', (): void => {
@@ -18,7 +17,7 @@ describe('src/action/options.ts', (): void => {
           version: '1.0',
           directory: 'build',
           tag: '',
-          private: '',
+          access: '',
           silent: '',
           execute: '',
         })
@@ -40,7 +39,7 @@ describe('src/action/options.ts', (): void => {
           version: 'v1.23.4',
           directory: 'build',
           tag: '',
-          private: '',
+          access: '',
           silent: '',
           execute: 'true',
         })
@@ -143,12 +142,16 @@ describe('src/action/options.ts', (): void => {
   });
 
   describe('normalisePublishAccess()', (): void => {
+    it('can resolve blank value, public', (): void => {
+      expect(normalisePublishAccess('')).toStrictEqual(PublishAccess.Public);
+    });
+
     it('can resolve access, public', (): void => {
-      expect(normalisePublishAccess(false)).toStrictEqual(PublishAccess.Public);
+      expect(normalisePublishAccess('public')).toStrictEqual(PublishAccess.Public);
     });
 
     it('can resolve access, private', (): void => {
-      expect(normalisePublishAccess(true)).toStrictEqual(PublishAccess.Private);
+      expect(normalisePublishAccess('public')).toStrictEqual(PublishAccess.Private);
     });
   });
 
