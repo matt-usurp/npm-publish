@@ -5,6 +5,7 @@ describe('src/action/options.ts', (): void => {
     it('can normalise basic arguments', (): void => {
       const expected: ActionOptions = {
         version: '1.0.0',
+        token: 'some-token',
         directory: 'build',
         tag: 'latest',
         access: PublishAccess.Public,
@@ -15,6 +16,7 @@ describe('src/action/options.ts', (): void => {
       expect(
         normalise({
           version: '1.0',
+          token: 'some-token',
           directory: 'build',
           tag: '',
           access: '',
@@ -27,6 +29,7 @@ describe('src/action/options.ts', (): void => {
     it('can normalise basic arguments, with version prefix and dry', (): void => {
       const expected: ActionOptions = {
         version: '1.23.4',
+        token: 'some-token',
         directory: 'build',
         tag: 'latest',
         access: PublishAccess.Public,
@@ -37,6 +40,7 @@ describe('src/action/options.ts', (): void => {
       expect(
         normalise({
           version: 'v1.23.4',
+          token: 'some-token',
           directory: 'build',
           tag: '',
           access: '',
@@ -151,7 +155,7 @@ describe('src/action/options.ts', (): void => {
     });
 
     it('can resolve access, private', (): void => {
-      expect(normalisePublishAccess('public')).toStrictEqual(PublishAccess.Private);
+      expect(normalisePublishAccess('private')).toStrictEqual(PublishAccess.Private);
     });
   });
 

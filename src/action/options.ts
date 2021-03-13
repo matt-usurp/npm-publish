@@ -6,6 +6,7 @@ import coerce from 'semver/functions/coerce';
  */
 export type InputActionOptions = {
   version: string;
+  token: string;
   directory: string;
   tag: string;
   access: string;
@@ -20,6 +21,7 @@ export enum PublishAccess {
 
 export type ActionOptions = {
   version: string;
+  token: string;
   directory: string | undefined;
   tag: string;
   access: PublishAccess;
@@ -30,6 +32,7 @@ export type ActionOptions = {
 export function normalise(input: InputActionOptions): ActionOptions {
   return {
     version: normaliseVersion(input.version),
+    token: input.token,
     directory: normaliseDirectory(input.directory),
     access: normalisePublishAccess(input.access),
     tag: normaliseDistributionTag(input.tag),

@@ -1,9 +1,10 @@
 import { exec } from '@actions/exec';
-import { LoggerFunction } from './logger';
+import { keypair, LoggerFunction } from './logger';
 import { ActionOptions } from './options';
 
 export type CommandOptions = {
   cwd: string | undefined;
+  env: Record<string, string> | undefined;
   silent: boolean;
 };
 
@@ -28,6 +29,7 @@ export function version(options: ActionOptions): Command {
     arguments: flags,
     options: {
       cwd: options.directory,
+      env: undefined,
       silent: options.silent,
     },
   };
@@ -51,6 +53,9 @@ export function publish(options: ActionOptions): Command {
     arguments: flags,
     options: {
       cwd: options.directory,
+      env: {
+        'NODE_AUTH_TOKEN': options.token,
+      },
       silent: options.silent,
     },
   };
@@ -87,7 +92,7 @@ The command in question:
 }
 
 export async function execute(logger: LoggerFunction, options: ActionOptions, command: Command): Promise<void> {
-  logger(`Executing: ${compose(command)}`);
+  logger(keypair('command', compose(command)));
 
   // The version command does not have a dry run, so we cannot safely execute this command.
   // Therefore we will ignore it, this could be an "all command" thing, but dry run on publish is useful.
@@ -98,7 +103,16 @@ export async function execute(logger: LoggerFunction, options: ActionOptions, co
   const code = await exec(
     command.command,
     command.arguments,
-    command.options,
+    {
+      ...command.options,
+
+      // Merging in the process environment with any additional command environments.
+      // Apparently this doesn't merge for us, but instead replace the environment entirely.
+      env: {
+        ...command.options.env,
+        ...process.env as Record<string, string>,
+      }
+    },
   );
 
   if (code === 0) {

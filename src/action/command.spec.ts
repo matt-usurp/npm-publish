@@ -13,6 +13,7 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: undefined,
           silent: false,
         },
       };
@@ -20,6 +21,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         version({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: '',
           access: PublishAccess.Public,
@@ -39,6 +41,7 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: undefined,
           silent: true,
         },
       };
@@ -46,6 +49,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         version({
           version: '2.3',
+          token: 'some-token',
           directory: undefined,
           tag: '',
           access: PublishAccess.Public,
@@ -66,6 +70,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: false,
         },
       };
@@ -73,6 +80,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
@@ -82,7 +90,7 @@ describe('src/action/command.ts', (): void => {
       ).toStrictEqual(expected);
     });
 
-    it('can build publish, with directory argument provided', (): void => {
+    it('can build publish command, with directory argument provided', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
@@ -91,6 +99,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: 'build/workspace',
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: false,
         },
       };
@@ -98,6 +109,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: 'build/workspace',
           tag: 'latest',
           access: PublishAccess.Public,
@@ -107,7 +119,7 @@ describe('src/action/command.ts', (): void => {
       ).toStrictEqual(expected);
     });
 
-    it('can build publish, with dry-run flag', (): void => {
+    it('can build publish command, with dry-run flag', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
@@ -117,6 +129,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: false,
         },
       };
@@ -124,6 +139,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
@@ -133,7 +149,7 @@ describe('src/action/command.ts', (): void => {
       ).toStrictEqual(expected);
     });
 
-    it('can build publish, with silent flag', (): void => {
+    it('can build publish command, with silent flag', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
@@ -142,6 +158,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: true,
         },
       };
@@ -149,6 +168,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: 'latest',
           access: PublishAccess.Public,
@@ -158,7 +178,7 @@ describe('src/action/command.ts', (): void => {
       ).toStrictEqual(expected);
     });
 
-    it('can build publish, with distribution tag', (): void => {
+    it('can build publish command, with distribution tag', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
@@ -167,6 +187,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: false,
         },
       };
@@ -174,6 +197,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: 'beta',
           access: PublishAccess.Public,
@@ -183,7 +207,7 @@ describe('src/action/command.ts', (): void => {
       ).toStrictEqual(expected);
     });
 
-    it('can build publish, with access private', (): void => {
+    it('can build publish command, with access private', (): void => {
       const expected: Command = {
         command: 'npm publish',
         arguments: [
@@ -192,6 +216,9 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: {
+            'NODE_AUTH_TOKEN': 'some-token',
+          },
           silent: false,
         },
       };
@@ -199,6 +226,7 @@ describe('src/action/command.ts', (): void => {
       expect(
         publish({
           version: '1.0',
+          token: 'some-token',
           directory: undefined,
           tag: 'latest',
           access: PublishAccess.Private,
@@ -220,6 +248,7 @@ describe('src/action/command.ts', (): void => {
           ],
           options: {
             cwd: undefined,
+            env: undefined,
             silent: false,
           },
         })
@@ -236,6 +265,7 @@ describe('src/action/command.ts', (): void => {
           ],
           options: {
             cwd: undefined,
+            env: undefined,
             silent: false,
           },
         })
@@ -253,6 +283,7 @@ describe('src/action/command.ts', (): void => {
         ],
         options: {
           cwd: undefined,
+          env: undefined,
           silent: false,
         },
       });
