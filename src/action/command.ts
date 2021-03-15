@@ -103,8 +103,8 @@ export async function execute(logger: LoggerFunction, options: ActionOptions, co
       // Merging in the process environment with any additional command environments.
       // Apparently this doesn't merge for us, but instead replace the environment entirely.
       env: {
-        ...command.options.env,
         ...process.env as Record<string, string>,
+        ...command.options.env,
       }
     },
   );
