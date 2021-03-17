@@ -32,10 +32,10 @@ export async function main(logger: LoggerFunction | undefined): Promise<void> {
     print(keypair('silent', options.execute ? 'true' : 'false'));
 
     print(header('Executing version update'));
-    await execute(print, options, version(options));
+    await execute(print, version(options));
 
     print(header('Executig package publication'));
-    await execute(print, options, publish(options));
+    await execute(print, publish(options));
 
     print(header('Action complete!'));
 
