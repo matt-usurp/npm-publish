@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/matt-usurp/npm-publish/compare/v1.0.0...v1.1.0) (2021-03-17)
+
+
+### Features
+
+* version allows same version flag ([8a33994](https://github.com/matt-usurp/npm-publish/commit/8a33994ef2360e8943bf478835e436c61a0bb486))
+
+
+### Bug Fixes
+
+* our environment over process environment ([f0eab62](https://github.com/matt-usurp/npm-publish/commit/f0eab6256fa2ff58125f0fe7ff23ad6eb21245ae))
+
 ### 1.0.0 (2021-03-13)
 
 
