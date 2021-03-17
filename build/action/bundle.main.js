@@ -2361,6 +2361,7 @@ function version(options) {
   const flags = [];
   flags.push(options.version);
   flags.push('--force');
+  flags.push('--allow-same-version');
   flags.push('--no-git-tag-version');
   return {
     command: 'npm version',
@@ -2413,18 +2414,17 @@ The command in question:
   }
 
 }
-async function execute(logger, options, command) {
+async function execute(logger, command) {
   logger(keypair('command', compose(command)));
-  const code = await (0,exec.exec)(command.command, command.arguments, { ...command.options,
+  const options = { ...command.options,
     env: { ...process.env,
       ...command.options.env
     }
+  };
+  console.dir(options, {
+    depth: 10
   });
-
-  if (code === 0) {
-    return;
-  }
-
+  await (0,exec.exec)('env', [], options);
   throw new ExecutionError(command);
 }
 // EXTERNAL MODULE: ./node_modules/semver/functions/coerce.js
@@ -2524,9 +2524,9 @@ async function main(logger) {
     print(keypair('execute', options.execute ? 'true' : 'false'));
     print(keypair('silent', options.execute ? 'true' : 'false'));
     print(header('Executing version update'));
-    await execute(print, options, version(options));
+    await execute(print, version(options));
     print(header('Executig package publication'));
-    await execute(print, options, publish(options));
+    await execute(print, publish(options));
     print(header('Action complete!'));
     (0,core.setOutput)('version', options.version);
   } catch (error) {
