@@ -103,6 +103,8 @@ The command in question:
 export async function execute(logger: LoggerFunction, command: Command): Promise<void> {
   logger(keypair('command', compose(command)));
 
+  const config = getConfigurationFileLocation();
+
   const options: ExecOptions = {
     ...command.options,
 
@@ -112,14 +114,13 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
       ...process.env as Record<string, string>,
       ...command.options.env,
 
-      'NPM_CONFIG_USERCONFIG': getConfigurationFileLocation(),
+      'NPM_CONFIG_USERCONFIG': config,
     }
   };
 
-  console.log(
-    getConfigurationFileLocation(),
-  );
+  console.log(config);
 
+  await exec(`cat ${config} || true`, [], options);
   await exec('npm config list', [], options);
 
   const code = await exec(

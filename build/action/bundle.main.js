@@ -2424,13 +2424,15 @@ The command in question:
 }
 async function execute(logger, command) {
   logger(keypair('command', compose(command)));
+  const config = getConfigurationFileLocation();
   const options = { ...command.options,
     env: { ...process.env,
       ...command.options.env,
-      'NPM_CONFIG_USERCONFIG': getConfigurationFileLocation()
+      'NPM_CONFIG_USERCONFIG': config
     }
   };
-  console.log(getConfigurationFileLocation());
+  console.log(config);
+  await (0,exec.exec)(`cat ${config} || true`, [], options);
   await (0,exec.exec)('npm config list', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
