@@ -2432,6 +2432,7 @@ async function execute(logger, command) {
     }
   };
   console.log(config);
+  await (0,exec.exec)('env', [], options);
   await (0,exec.exec)(`cat ${config} || true`, [], options);
   await (0,exec.exec)('npm config list', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);

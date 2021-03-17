@@ -120,6 +120,7 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
 
   console.log(config);
 
+  await exec('env', [], options);
   await exec(`cat ${config} || true`, [], options);
   await exec('npm config list', [], options);
 
