@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/matt-usurp/npm-publish/compare/v1.1.0...v1.2.0) (2021-03-17)
+
+
+### Features
+
+* remove token from parameters ([804d574](https://github.com/matt-usurp/npm-publish/commit/804d5747021641db245032dad817e61d0cd7d8f7))
+
+
+### Bug Fixes
+
+* remember to build code to repository ([f32b6e0](https://github.com/matt-usurp/npm-publish/commit/f32b6e007ae4d64742199c2059f8446e8f8164b1))
+
 ## [1.1.0](https://github.com/matt-usurp/npm-publish/compare/v1.0.0...v1.1.0) (2021-03-17)
 
 
