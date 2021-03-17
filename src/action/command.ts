@@ -15,6 +15,13 @@ export type Command = {
   options: CommandOptions;
 };
 
+export function getConfigurationFileLocation(): string {
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const directory = process.env['RUNNER_TEMP'] || process.cwd();
+
+  return path.resolve(directory, '.npmrc');
+}
+
 /**
  * Build the version command to set the package version.
  */
@@ -104,14 +111,13 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
     env: {
       ...process.env as Record<string, string>,
       ...command.options.env,
+
+      'NPM_CONFIG_USERCONFIG': getConfigurationFileLocation(),
     }
   };
 
   console.log(
-    path.resolve(
-      process.env['RUNNER_TEMP'] || process.cwd(),
-      '.npmrc'
-    )
+    getConfigurationFileLocation(),
   );
 
   await exec('npm config list', [], options);

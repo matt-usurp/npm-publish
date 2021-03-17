@@ -2361,6 +2361,10 @@ function keypair(key, value) {
 
 
 
+function getConfigurationFileLocation() {
+  const directory = process.env['RUNNER_TEMP'] || process.cwd();
+  return external_path_default().resolve(directory, '.npmrc');
+}
 function version(options) {
   const flags = [];
   flags.push(options.version);
@@ -2422,10 +2426,11 @@ async function execute(logger, command) {
   logger(keypair('command', compose(command)));
   const options = { ...command.options,
     env: { ...process.env,
-      ...command.options.env
+      ...command.options.env,
+      'NPM_CONFIG_USERCONFIG': getConfigurationFileLocation()
     }
   };
-  console.log(external_path_default().resolve(process.env['RUNNER_TEMP'] || process.cwd(), '.npmrc'));
+  console.log(getConfigurationFileLocation());
   await (0,exec.exec)('npm config list', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
