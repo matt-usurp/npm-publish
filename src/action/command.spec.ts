@@ -246,6 +246,7 @@ describe('src/action/command.ts', (): void => {
           command: 'npm version',
           arguments: [
             '--force',
+            '--allow-same-version',
             '--no-git-tag-version',
           ],
           options: {
@@ -254,7 +255,7 @@ describe('src/action/command.ts', (): void => {
             silent: false,
           },
         })
-      ).toStrictEqual('npm version --force --no-git-tag-version');
+      ).toStrictEqual('npm version --force --allow-same-version --no-git-tag-version');
     });
 
     it('can compose string from command, publish', (): void => {
