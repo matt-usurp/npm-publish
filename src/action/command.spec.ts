@@ -9,6 +9,7 @@ describe('src/action/command.ts', (): void => {
         arguments: [
           '1.0',
           '--force',
+          '--allow-same-version',
           '--no-git-tag-version',
         ],
         options: {
@@ -37,6 +38,7 @@ describe('src/action/command.ts', (): void => {
         arguments: [
           '2.3',
           '--force',
+          '--allow-same-version',
           '--no-git-tag-version',
         ],
         options: {

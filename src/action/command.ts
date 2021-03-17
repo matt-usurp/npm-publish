@@ -22,6 +22,7 @@ export function version(options: ActionOptions): Command {
 
   flags.push(options.version);
   flags.push('--force');
+  flags.push('--allow-same-version');
   flags.push('--no-git-tag-version');
 
   return {
