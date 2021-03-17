@@ -28,10 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          registry-url: registry-url-here
+
       - uses: matt-usurp/npm-publish@v1
         with:
           version: ${{ github.ref }}
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 ```
 
 In practice it looks as follows:
@@ -55,7 +59,6 @@ You can configure the action with the following parameters:
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
 | `version` | `string` | `true` | `n/a` | The version to publish |
-| `token` | `string` | `true` | `n/a` | The authentication token to use |
 | `directory` | `string` | `false` | `cwd` | The directory to publish |
 | `tag` | `string` | `false` | `latest` | The [npm-dist-tag](https://docs.npmjs.com/cli/v7/commands/npm-dist-tag) to be used |
 | `access` | `string` | `false` | `public` | The [npm-access](https://docs.npmjs.com/cli/v7/commands/npm-access) to be used |

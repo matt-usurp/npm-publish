@@ -1,11 +1,10 @@
-import { exec, ExecOptions } from '@actions/exec';
+import { exec } from '@actions/exec';
 import path from 'path';
 import { keypair, LoggerFunction } from './logger';
 import { ActionOptions } from './options';
 
 export type CommandOptions = {
   cwd: string | undefined;
-  env: Record<string, string> | undefined;
   silent: boolean;
 };
 
@@ -38,7 +37,6 @@ export function version(options: ActionOptions): Command {
     arguments: flags,
     options: {
       cwd: options.directory,
-      env: undefined,
       silent: options.silent,
     },
   };
@@ -62,9 +60,6 @@ export function publish(options: ActionOptions): Command {
     arguments: flags,
     options: {
       cwd: options.directory,
-      env: {
-        'NODE_AUTH_TOKEN': options.token,
-      },
       silent: options.silent,
     },
   };
@@ -103,31 +98,10 @@ The command in question:
 export async function execute(logger: LoggerFunction, command: Command): Promise<void> {
   logger(keypair('command', compose(command)));
 
-  const config = getConfigurationFileLocation();
-
-  const options: ExecOptions = {
-    ...command.options,
-
-    // Merging in the process environment with any additional command environments.
-    // Apparently this doesn't merge for us, but instead replace the environment entirely.
-    env: {
-      ...process.env as Record<string, string>,
-      ...command.options.env,
-
-      'NPM_CONFIG_USERCONFIG': config,
-    }
-  };
-
-  console.log(config);
-
-  await exec('env', [], options);
-  await exec(`cat ${config} || true`, [], options);
-  await exec('npm config list', [], options);
-
   const code = await exec(
     command.command,
     command.arguments,
-    options,
+    command.options,
   );
 
   if (code === 0) {

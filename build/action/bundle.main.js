@@ -2346,7 +2346,6 @@ var core = __webpack_require__(225);
 var exec = __webpack_require__(27);
 // EXTERNAL MODULE: external "path"
 var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 ;// CONCATENATED MODULE: ./build/workspace/action/logger.js
 const logger_reset = '\u001b[0m';
 const cyan = '\u001b[36m';
@@ -2363,7 +2362,7 @@ function keypair(key, value) {
 
 function getConfigurationFileLocation() {
   const directory = process.env['RUNNER_TEMP'] || process.cwd();
-  return external_path_default().resolve(directory, '.npmrc');
+  return path.resolve(directory, '.npmrc');
 }
 function version(options) {
   const flags = [];
@@ -2376,7 +2375,6 @@ function version(options) {
     arguments: flags,
     options: {
       cwd: options.directory,
-      env: undefined,
       silent: options.silent
     }
   };
@@ -2395,9 +2393,6 @@ function publish(options) {
     arguments: flags,
     options: {
       cwd: options.directory,
-      env: {
-        'NODE_AUTH_TOKEN': options.token
-      },
       silent: options.silent
     }
   };
@@ -2424,18 +2419,7 @@ The command in question:
 }
 async function execute(logger, command) {
   logger(keypair('command', compose(command)));
-  const config = getConfigurationFileLocation();
-  const options = { ...command.options,
-    env: { ...process.env,
-      ...command.options.env,
-      'NPM_CONFIG_USERCONFIG': config
-    }
-  };
-  console.log(config);
-  await (0,exec.exec)('env', [], options);
-  await (0,exec.exec)(`cat ${config} || true`, [], options);
-  await (0,exec.exec)('npm config list', [], options);
-  const code = await (0,exec.exec)(command.command, command.arguments, options);
+  const code = await (0,exec.exec)(command.command, command.arguments, command.options);
 
   if (code === 0) {
     return;
@@ -2458,7 +2442,6 @@ var PublishAccess;
 function normalise(input) {
   return {
     version: normaliseVersion(input.version),
-    token: input.token,
     directory: normaliseDirectory(input.directory),
     access: normalisePublishAccess(input.access),
     tag: normaliseDistributionTag(input.tag),
@@ -2514,9 +2497,6 @@ async function main(logger) {
     let print = logger;
     const options = normalise({
       version: (0,core.getInput)('version', {
-        required: true
-      }),
-      token: (0,core.getInput)('token', {
         required: true
       }),
       directory: (0,core.getInput)('directory'),

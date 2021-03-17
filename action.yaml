@@ -18,11 +18,6 @@ inputs:
       This should be a semvar compliant version string with or without the "v" prefix.
       Optionally this can be a "git-ref" path where the final segment is a semver compliant version string.
 
-  token:
-    required: true
-    description: |
-      The authentication token to use when publishing the package.
-
   directory:
     required: false
     description: |

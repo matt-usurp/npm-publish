@@ -9,7 +9,6 @@ export async function main(logger: LoggerFunction | undefined): Promise<void> {
 
     const options = normalise({
       version: input('version', { required: true }),
-      token: input('token', { required: true }),
       directory: input('directory'),
       tag: input('tag'),
       access: input('private'),
