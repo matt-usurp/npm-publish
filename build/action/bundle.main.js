@@ -2421,9 +2421,8 @@ async function execute(logger, command) {
       ...command.options.env
     }
   };
-  console.dir(options, {
-    depth: 10
-  });
+  await (0,exec.exec)('npm config get auth', [], options);
+  await (0,exec.exec)('npm config get registry', [], options);
   await (0,exec.exec)('env', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
