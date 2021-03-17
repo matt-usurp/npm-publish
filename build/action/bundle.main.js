@@ -2425,6 +2425,12 @@ async function execute(logger, command) {
     depth: 10
   });
   await (0,exec.exec)('env', [], options);
+  const code = await (0,exec.exec)(command.command, command.arguments, options);
+
+  if (code === 0) {
+    return;
+  }
+
   throw new ExecutionError(command);
 }
 // EXTERNAL MODULE: ./node_modules/semver/functions/coerce.js
