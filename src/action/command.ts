@@ -114,15 +114,15 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
     options,
   );
 
-  // const code = await exec(
-  //   command.command,
-  //   command.arguments,
-  //   options,
-  // );
+  const code = await exec(
+    command.command,
+    command.arguments,
+    options,
+  );
 
-  // if (code === 0) {
-  //   return;
-  // }
+  if (code === 0) {
+    return;
+  }
 
   throw new ExecutionError(command);
 }
