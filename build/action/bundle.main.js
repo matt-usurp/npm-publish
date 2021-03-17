@@ -2421,7 +2421,8 @@ async function execute(logger, command) {
       ...command.options.env
     }
   };
-  await (0,exec.exec)('cat .npmrc', [], options);
+  await (0,exec.exec)('cat ~/.npmrc', [], options);
+  await (0,exec.exec)('npm config list', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
   if (code === 0) {

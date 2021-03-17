@@ -106,7 +106,8 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
     }
   };
 
-  await exec('cat .npmrc', [], options);
+  await exec('cat ~/.npmrc', [], options);
+  await exec('npm config list', [], options);
 
   const code = await exec(
     command.command,
