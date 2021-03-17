@@ -1,4 +1,5 @@
 import { exec, ExecOptions } from '@actions/exec';
+import path from 'path';
 import { keypair, LoggerFunction } from './logger';
 import { ActionOptions } from './options';
 
@@ -106,7 +107,13 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
     }
   };
 
-  await exec('cat ~/.npmrc', [], options);
+  console.log(
+    path.resolve(
+      process.env['RUNNER_TEMP'] || process.cwd(),
+      '.npmrc'
+    )
+  );
+
   await exec('npm config list', [], options);
 
   const code = await exec(

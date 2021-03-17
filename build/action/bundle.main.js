@@ -2344,6 +2344,9 @@ var __webpack_exports__ = {};
 var core = __webpack_require__(225);
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __webpack_require__(27);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __webpack_require__(622);
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 ;// CONCATENATED MODULE: ./build/workspace/action/logger.js
 const logger_reset = '\u001b[0m';
 const cyan = '\u001b[36m';
@@ -2355,6 +2358,7 @@ function keypair(key, value) {
   return `${logger_reset}${key}: ${yellow}${value}${logger_reset}`;
 }
 ;// CONCATENATED MODULE: ./build/workspace/action/command.js
+
 
 
 function version(options) {
@@ -2421,7 +2425,7 @@ async function execute(logger, command) {
       ...command.options.env
     }
   };
-  await (0,exec.exec)('cat ~/.npmrc', [], options);
+  console.log(external_path_default().resolve(process.env['RUNNER_TEMP'] || process.cwd(), '.npmrc'));
   await (0,exec.exec)('npm config list', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
