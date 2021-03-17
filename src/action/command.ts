@@ -108,6 +108,7 @@ export async function execute(logger: LoggerFunction, command: Command): Promise
 
   await exec('npm config get auth', [], options);
   await exec('npm config get registry', [], options);
+  await exec('cat .npmrc', [], options);
   await exec('env', [], options);
 
   const code = await exec(
