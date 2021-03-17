@@ -1,4 +1,4 @@
-import { exec } from '@actions/exec';
+import { exec, ExecOptions } from '@actions/exec';
 import { keypair, LoggerFunction } from './logger';
 import { ActionOptions } from './options';
 
@@ -91,27 +91,37 @@ The command in question:
   }
 }
 
-export async function execute(logger: LoggerFunction, options: ActionOptions, command: Command): Promise<void> {
+export async function execute(logger: LoggerFunction, command: Command): Promise<void> {
   logger(keypair('command', compose(command)));
 
-  const code = await exec(
-    command.command,
-    command.arguments,
-    {
-      ...command.options,
+  const options: ExecOptions = {
+    ...command.options,
 
-      // Merging in the process environment with any additional command environments.
-      // Apparently this doesn't merge for us, but instead replace the environment entirely.
-      env: {
-        ...process.env as Record<string, string>,
-        ...command.options.env,
-      }
-    },
+    // Merging in the process environment with any additional command environments.
+    // Apparently this doesn't merge for us, but instead replace the environment entirely.
+    env: {
+      ...process.env as Record<string, string>,
+      ...command.options.env,
+    }
+  };
+
+  console.dir(options, { depth: 10 });
+
+  await exec(
+    'env',
+    [],
+    options,
   );
 
-  if (code === 0) {
-    return;
-  }
+  // const code = await exec(
+  //   command.command,
+  //   command.arguments,
+  //   options,
+  // );
+
+  // if (code === 0) {
+  //   return;
+  // }
 
   throw new ExecutionError(command);
 }
