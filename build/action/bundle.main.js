@@ -2421,9 +2421,7 @@ async function execute(logger, command) {
       ...command.options.env
     }
   };
-  await (0,exec.exec)('npm config get auth', [], options);
-  await (0,exec.exec)('npm config get registry', [], options);
-  await (0,exec.exec)('env', [], options);
+  await (0,exec.exec)('cat .npmrc', [], options);
   const code = await (0,exec.exec)(command.command, command.arguments, options);
 
   if (code === 0) {
