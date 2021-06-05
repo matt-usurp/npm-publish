@@ -1,7 +1,8 @@
 import { exec } from '@actions/exec';
 import path from 'path';
-import { keypair, LoggerFunction } from './logger';
-import { ActionOptions } from './options';
+import type { LoggerFunction } from './logger';
+import { keypair } from './logger';
+import type { ActionOptions } from './options';
 
 export type CommandOptions = {
   cwd: string | undefined;
