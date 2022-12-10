@@ -1,28 +1,9 @@
-# --
-# -- Change Log
-# --
-
-# The dependencies here are not installed in the package.json.
-# Instead we just use npx to download as needed.
-# Do not want to bloat the package file as it increases CI times.
-
-.PHONY: \
-	changelog \
-	changelog.proof
-
-changelog:
-	npx standard-version \
-		--skip.commit \
-		--skip.tag
-
-changelog.proof:
-	npx standard-version \
-		--skip.commit \
-		--skip.tag \
-		--dry-run
+.PHONY: default
+default:
+	#
 
 # --
-# -- Code Formatting & Linting
+# -- Code Formatting
 # --
 
 .PHONY: \
@@ -50,50 +31,39 @@ code.fix:
 
 .PHONY: \
 	test \
+  test.watch \
+	test.coverage.open \
 	test.build
 
 test:
-	npx jest --verbose
+	npx vitest run -c vitest.config.ts --coverage
+
+test.watch:
+	npx vitest watch -c vitest.config.ts
+
+test.coverage.open:
+	open build/coverage/index.html
 
 test.build:
-	INPUT_VERSION="v1.2.3" INPUT_TOKEN="some-token" INPUT_DIRECTORY="build/playground" node build/action/bundle.main.js
+	INPUT_VERSION="v1.2.3" INPUT_TOKEN="some-token" INPUT_DIRECTORY="build/playground" node build/action.js
 
 # --
 # -- Build
 # --
 
-.PHONY: \
-	build \
-	build.clean \
-	build.tsc \
-	build.tsc.clean \
-	build.webpack \
-	build.webpack.clean
-
 build: \
-	build.clean \
-	build.tsc \
-	build.tsc.clean \
-	build.webpack \
-	build.webpack.clean
+	build.compile \
+	build.compile.verify
 
-build.clean:
-	rm -rf build/workspace
-	mkdir -p build/workspace
+build.compile:
+	npx esbuild \
+    src/main.ts \
+		--bundle \
+		--platform=node \
+		--target=node16 \
+		--format=cjs \
+		--tree-shaking=true \
+		--outfile=build/action.js
 
-build.tsc:
-	npx tsc --project build/tsconfig.json
-
-build.tsc.clean:
-	find build/workspace -type f -name "*.spec.js" -delete
-	find build/workspace -type f -name "*.spec.js.map" -delete
-	find build/workspace -type f -name "*.spec.d.ts" -delete
-
-build.webpack:
-	npx webpack \
-		--config build/webpack.config.js \
-		--color \
-		--stats
-
-build.webpack.clean:
-	find build/action -type f -name "*.txt" -delete
+build.compile.verify:
+	test -f build/action.js

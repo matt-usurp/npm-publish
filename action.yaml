@@ -1,5 +1,6 @@
 name: NPM Publish Version
 description: An action for publishing NPM packages with a specified version or against a given tag.
+
 author: Matthew Usurp
 
 branding:
@@ -7,8 +8,8 @@ branding:
   icon: briefcase
 
 runs:
-  using: node12
-  main: build/action/bundle.main.js
+  using: node16
+  main: build/action.js
 
 inputs:
   version:
