@@ -1,6 +1,7 @@
 # Publish to Node Package Manager (NPM)
 
-An action that wraps the [npm-publish](https://docs.npmjs.com/cli/v6/commands/npm-publish) and [npm-version](https://docs.npmjs.com/cli/v6/commands/npm-version) commands.
+An action that wraps the [npm-publish](https://docs.npmjs.com/cli/v6/commands/npm-publish) command.
+Also optionally calling the [npm-version](https://docs.npmjs.com/cli/v6/commands/npm-version) command before hand to allow for manual version publishing (see the `version` input parameter).
 
 ## Example
 
@@ -40,7 +41,7 @@ You can configure the action with the following input parameters:
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| `version` | `string` | `true` | `n/a` | A valid semantic version to use when publishing |
+| `version` | `string` | `false` | `[current]` | A valid semantic version to use when publishing |
 | `tag` | `string` | `false` | `latest` | The [npm-dist-tag](https://docs.npmjs.com/cli/v7/commands/npm-dist-tag) to be used when publishing |
 | `access` | `string` | `false` | `public` | The [npm-access](https://docs.npmjs.com/cli/v7/commands/npm-access) to be used when publishing |
 | `dry-run` | `boolean` | `false` | `false` | If the publish command should be dry ran |

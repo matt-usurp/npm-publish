@@ -5507,7 +5507,7 @@ var normaliseInputDistributionTagValue = (value) => {
 // src/core/action.ts
 var action = async (action2) => {
   try {
-    const version3 = normaliseInputVersionValue(action2.input("version", { required: true }));
+    const version3 = normaliseInputStringValue(action2.input("version"));
     const access = normaliseInputPublishAccessValue(action2.input("access"));
     const tag = normaliseInputDistributionTagValue(action2.input("tag"));
     const dryrun = normaliseInputBooleanValue(action2.input("dry-run"));
@@ -5515,7 +5515,10 @@ var action = async (action2) => {
       cwd: normaliseInputStringValue(action2.input("directory")),
       silent: normaliseInputBooleanValue(action2.input("silent"))
     };
-    await execute(action2.execute, version2(version3, options));
+    if (version3 !== void 0) {
+      const normalised = normaliseInputVersionValue(version3);
+      await execute(action2.execute, version2(normalised, options));
+    }
     await execute(action2.execute, publish(access, tag, dryrun, options));
   } catch (error) {
     action2.fail(`An expected error occured: ${error}`);

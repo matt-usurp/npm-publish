@@ -1,11 +1,13 @@
 import { fn } from '@matt-usurp/grok/testing';
-import { action, ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction, ActionInputFunctionOptions } from './action';
+import { action, ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction } from './action';
 
 describe('action()', (): void => {
-  it('with invalid input, version, missing, throw error', async (): Promise<void> => {
+  it('with no inputs, run only publish', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
     const fail = fn<ActionFailFunction>();
+
+    execute.mockResolvedValueOnce(0);
 
     input.mockReturnValueOnce(''); // version
     input.mockReturnValueOnce(''); // access
@@ -21,13 +23,29 @@ describe('action()', (): void => {
       fail,
     });
 
-    expect(execute).toBeCalledTimes(0);
+    expect(execute).toBeCalledTimes(1);
+    expect(execute).toHaveBeenNthCalledWith<[string, string[], ActionExecuteFunctionOptions]>(
+      1,
+      'npm publish',
+      [
+        '--access', 'public',
+        '--tag', 'latest',
+      ],
+      {
+        cwd: undefined,
+        silent: false,
+      },
+    );
 
-    expect(input).toBeCalledTimes(1);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toBeCalledTimes(6);
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
+    expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
+    expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
+    expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
+    expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
+    expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(fail).toBeCalledTimes(1);
-    expect(fail).toHaveBeenNthCalledWith<[string]>(1, 'An expected error occured: Error: The npm-version must be provided and be a valid semantic version');
+    expect(fail).toBeCalledTimes(0);
   });
 
   it('with invalid input, version, invalid, throw error', async (): Promise<void> => {
@@ -51,8 +69,13 @@ describe('action()', (): void => {
 
     expect(execute).toBeCalledTimes(0);
 
-    expect(input).toBeCalledTimes(1);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toBeCalledTimes(6);
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
+    expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
+    expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
+    expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
+    expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
+    expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
     expect(fail).toBeCalledTimes(1);
     expect(fail).toHaveBeenNthCalledWith<[string]>(1, 'An expected error occured: Error: The npm-version given "v1.2" is not a valid semantic version');
@@ -110,7 +133,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
@@ -172,7 +195,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
@@ -234,7 +257,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
@@ -297,7 +320,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
@@ -359,7 +382,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
@@ -421,7 +444,7 @@ describe('action()', (): void => {
     );
 
     expect(input).toBeCalledTimes(6);
-    expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
+    expect(input).toHaveBeenNthCalledWith<[string]>(1, 'version');
     expect(input).toHaveBeenNthCalledWith<[string]>(2, 'access');
     expect(input).toHaveBeenNthCalledWith<[string]>(3, 'tag');
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
