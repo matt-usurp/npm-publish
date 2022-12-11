@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/matt-usurp/npm-publish/compare/v1.2.0...v2.0.0) (2022-12-10)
+
+### Features
+
+- Upgraded `@action` packages to latest versions.
+- Rewrote the action from the ground up, now full covered with tests.
+- The `version` input parameter is now optional.
+When the `version` input is not provided it will only publish, whereas when it is provided it will first force the version to  be updated.
+
+### Breaking Changes
+
+- The `version` input parameter is no longer "coerced" into a valid semantic version and now requires a valid semantic version to be provided.
+For coercing of semantic versions you can look at the [validate-semver action](https://github.com/matt-usurp/validate-semver) that I also maintain and make use of its outputs.
+- The `execute` input parameter has been renamed to `dry-run` and its functionality has been inverted.
+Now the action will always publish unless the `dry-run` input parameter is truthy.
+- The action no longer has any outputs.
+
 ## [1.2.0](https://github.com/matt-usurp/npm-publish/compare/v1.1.0...v1.2.0) (2021-03-17)
 
 
