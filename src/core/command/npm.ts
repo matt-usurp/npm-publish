@@ -7,7 +7,7 @@ import type { Command, CommandOptions } from '../command';
  */
 export const enum PublishAccess {
   Public = 'public',
-  Private = 'private',
+  Restricted = 'restricted',
 }
 
 /**

@@ -41,11 +41,11 @@ export const normaliseInputPublishAccessValue = (value: string): PublishAccess =
     case PublishAccess.Public:
       return PublishAccess.Public;
 
-    case PublishAccess.Private:
-      return PublishAccess.Private;
+    case PublishAccess.Restricted:
+      return PublishAccess.Restricted;
 
     default:
-      throw new Error(`The npm-access tag "${value}" is not valid, must be either "public" or "private"`);
+      throw new Error(`The npm-access tag "${value}" is not valid, must be either "${PublishAccess.Public}" or "${PublishAccess.Restricted}"`);
   }
 };
 

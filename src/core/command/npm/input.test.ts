@@ -43,7 +43,7 @@ describe('normaliseInputPublishAccessValue()', (): void => {
   it('with invalid string, throw error', (): void => {
     expect(
       () => normaliseInputPublishAccessValue('foobar'),
-    ).toThrowError('The npm-access tag "foobar" is not valid, must be either "public" or "private"');
+    ).toThrowError('The npm-access tag "foobar" is not valid, must be either "public" or "restricted"');
   });
 
   it.each<{ readonly input: string; readonly expected: PublishAccess }>([
@@ -51,9 +51,9 @@ describe('normaliseInputPublishAccessValue()', (): void => {
     { input: 'PUBLIC', expected: PublishAccess.Public },
     { input: 'Public', expected: PublishAccess.Public },
 
-    { input: 'private', expected: PublishAccess.Private },
-    { input: 'PRIVATE', expected: PublishAccess.Private },
-    { input: 'Private', expected: PublishAccess.Private },
+    { input: 'restricted', expected: PublishAccess.Restricted },
+    { input: 'RESTRICTED', expected: PublishAccess.Restricted },
+    { input: 'Restricted', expected: PublishAccess.Restricted },
   ])('with value, $input, returns publish access, $expected', (data): void => {
     expect(
       normaliseInputPublishAccessValue(data.input),

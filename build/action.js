@@ -5408,6 +5408,26 @@ var normaliseInputBooleanValue = (value) => {
   ].includes(normalised.toLowerCase());
 };
 
+// src/core/command/error.ts
+var ExecutionError = class extends Error {
+  constructor(command) {
+    super([
+      "A command returned a non-zero exit code and therefore is assumed to have failed.",
+      "Please investigate the logs and raise an issue if there seems to be something incorrect."
+    ].join(" "));
+    this.command = command;
+  }
+  toString() {
+    return `
+An execution error occurred whilst executing a command:
+${this.message}
+
+The command in question:
+> ${compose(this.command)}
+    `.trim();
+  }
+};
+
 // src/core/command.ts
 var compose = (command) => {
   var _a;
@@ -5426,24 +5446,6 @@ var execute = async (execute3, command) => {
     return;
   }
   throw new ExecutionError(command);
-};
-var ExecutionError = class extends Error {
-  constructor(command) {
-    super([
-      "A command returned a non-zero exit code and therefore is assumed to have failed.",
-      "Please investigate the logs and raise an issue if there seems to be something incorrect."
-    ].join(" "));
-    this.command = command;
-  }
-  toString() {
-    return `
-An execution error occurred whilst executing a command:
-${this.message}
-
-The command in question:
-> ${compose(this.command)}
-    `.trim();
-  }
 };
 
 // src/core/command/npm.ts
@@ -5494,10 +5496,10 @@ var normaliseInputPublishAccessValue = (value) => {
   switch (value.toLowerCase()) {
     case "public" /* Public */:
       return "public" /* Public */;
-    case "private" /* Private */:
-      return "private" /* Private */;
+    case "restricted" /* Restricted */:
+      return "restricted" /* Restricted */;
     default:
-      throw new Error(`The npm-access tag "${value}" is not valid, must be either "public" or "private"`);
+      throw new Error(`The npm-access tag "${value}" is not valid, must be either "${"public" /* Public */}" or "${"restricted" /* Restricted */}"`);
   }
 };
 var normaliseInputDistributionTagValue = (value) => {
