@@ -1,11 +1,10 @@
 import { fn } from '@matt-usurp/grok/testing';
-import { action, ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction, ActionInputFunctionOptions, ActionOutputFunction } from './action';
+import { action, ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction, ActionInputFunctionOptions } from './action';
 
 describe('action()', (): void => {
   it('with invalid input, version, missing, throw error', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce(''); // version
@@ -19,7 +18,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -28,8 +26,6 @@ describe('action()', (): void => {
     expect(input).toBeCalledTimes(1);
     expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
 
-    expect(output).toBeCalledTimes(0);
-
     expect(fail).toBeCalledTimes(1);
     expect(fail).toHaveBeenNthCalledWith<[string]>(1, 'An expected error occured: Error: The npm-version must be provided and be a valid semantic version');
   });
@@ -37,7 +33,6 @@ describe('action()', (): void => {
   it('with invalid input, version, invalid, throw error', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('v1.2'); // version
@@ -51,7 +46,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -60,8 +54,6 @@ describe('action()', (): void => {
     expect(input).toBeCalledTimes(1);
     expect(input).toHaveBeenNthCalledWith<[string, ActionInputFunctionOptions]>(1, 'version', { required: true });
 
-    expect(output).toBeCalledTimes(0);
-
     expect(fail).toBeCalledTimes(1);
     expect(fail).toHaveBeenNthCalledWith<[string]>(1, 'An expected error occured: Error: The npm-version given "v1.2" is not a valid semantic version');
   });
@@ -69,7 +61,6 @@ describe('action()', (): void => {
   it('with valid input, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -86,7 +77,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -127,16 +117,12 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
-
     expect(fail).toBeCalledTimes(0);
   });
 
   it('with valid input, with access, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -153,7 +139,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -194,16 +179,12 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
-
     expect(fail).toBeCalledTimes(0);
   });
 
   it('with valid input, with tag, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -220,7 +201,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -261,16 +241,12 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
-
     expect(fail).toBeCalledTimes(0);
   });
 
   it('with valid input, with execute, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -287,7 +263,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -329,16 +304,12 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
-
     expect(fail).toBeCalledTimes(0);
   });
 
   it('with valid input, with directory, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -355,7 +326,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -396,16 +366,12 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
 
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
-
     expect(fail).toBeCalledTimes(0);
   });
 
   it('with valid input, with silent, execute version and publish, output version', async (): Promise<void> => {
     const execute = fn<ActionExecuteFunction>();
     const input = fn<ActionInputFunction>();
-    const output = fn<ActionOutputFunction>();
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
@@ -422,7 +388,6 @@ describe('action()', (): void => {
     await action({
       execute,
       input,
-      output,
       fail,
     });
 
@@ -462,9 +427,6 @@ describe('action()', (): void => {
     expect(input).toHaveBeenNthCalledWith<[string]>(4, 'dry-run');
     expect(input).toHaveBeenNthCalledWith<[string]>(5, 'directory');
     expect(input).toHaveBeenNthCalledWith<[string]>(6, 'silent');
-
-    expect(output).toBeCalledTimes(1);
-    expect(output).toHaveBeenNthCalledWith<[string, string]>(1, 'version', '2.3.4');
 
     expect(fail).toBeCalledTimes(0);
   });

@@ -17,11 +17,6 @@ export type {
 export type ActionInputFunction = (name: string, options?: ActionInputFunctionOptions) => string;
 
 /**
- * A function that can set an action output of the given {@link name}.
- */
-export type ActionOutputFunction = (name: string, value: string) => void;
-
-/**
  * A function that can execute commands against the build environment.
  */
 export type ActionExecuteFunction = (command: string, args?: string[], options?: ActionExecuteFunctionOptions) => Promise<number>;
@@ -37,7 +32,6 @@ export type ActionFailFunction = (reason: string) => void;
  */
 export type ActionDependencies = {
   readonly input: ActionInputFunction;
-  readonly output: ActionOutputFunction;
   readonly execute: ActionExecuteFunction;
   readonly fail: ActionFailFunction;
 };
@@ -59,8 +53,6 @@ export const action = async (action: ActionDependencies): Promise<void> => {
 
     await command.execute(action.execute, npm.version(version, options));
     await command.execute(action.execute, npm.publish(access, tag, dryrun, options));
-
-    action.output('version', version);
   } catch (error: unknown) {
     action.fail(`An expected error occured: ${error}`);
   }
