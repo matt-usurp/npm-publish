@@ -1,11 +1,17 @@
-name: Build & Validate PR
+name: Build
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - opened
       - reopened
       - synchronize
+
+env:
+  HUSKY: '0'
 
 jobs:
   build:
@@ -13,18 +19,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
 
       - run: npm ci --ignore-scripts
 
       - run: make code
       - run: make build
+
       - run: make test
-      - run: make test.build
