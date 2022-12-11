@@ -1,5 +1,6 @@
 import { fn } from '@matt-usurp/grok/testing';
-import { action, ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction } from './action';
+import type { ActionExecuteFunction, ActionExecuteFunctionOptions, ActionFailFunction, ActionInputFunction } from './action';
+import { action } from './action';
 
 describe('action()', (): void => {
   it('with no inputs, run only publish', async (): Promise<void> => {
