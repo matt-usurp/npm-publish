@@ -150,7 +150,7 @@ describe('action()', (): void => {
     const fail = fn<ActionFailFunction>();
 
     input.mockReturnValueOnce('2.3.4'); // version
-    input.mockReturnValueOnce('private'); // access
+    input.mockReturnValueOnce('restricted'); // access
     input.mockReturnValueOnce(''); // tag
     input.mockReturnValueOnce(''); // dry-run
 
@@ -186,7 +186,7 @@ describe('action()', (): void => {
       2,
       'npm publish',
       [
-        '--access', 'private',
+        '--access', 'restricted',
         '--tag', 'latest',
       ],
       {

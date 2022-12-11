@@ -85,13 +85,13 @@ describe('publish()', (): void => {
     });
   });
 
-  it('with required parameters, with access, private, outputs expected command specification', (): void => {
+  it('with required parameters, with access, restricted, outputs expected command specification', (): void => {
     expect(
-      publish(PublishAccess.Private, 'latest', false),
+      publish(PublishAccess.Restricted, 'latest', false),
     ).toStrictEqual<Command>({
       command: 'npm publish',
       arguments: [
-        '--access', 'private',
+        '--access', 'restricted',
         '--tag', 'latest',
       ],
 
