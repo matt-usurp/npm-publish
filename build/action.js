@@ -979,12 +979,12 @@ var require_lib = __commonJS({
       readBody() {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-            let output2 = Buffer.alloc(0);
+            let output = Buffer.alloc(0);
             this.message.on("data", (chunk) => {
-              output2 = Buffer.concat([output2, chunk]);
+              output = Buffer.concat([output, chunk]);
             });
             this.message.on("end", () => {
-              resolve(output2.toString());
+              resolve(output.toString());
             });
           }));
         });
@@ -5526,6 +5526,5 @@ var action = async (action2) => {
 void action({
   execute: import_exec.exec,
   input: import_core.getInput,
-  output: import_core.setOutput,
   fail: import_core.setFailed
 });
