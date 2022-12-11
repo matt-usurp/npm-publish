@@ -5517,7 +5517,6 @@ var action = async (action2) => {
     };
     await execute(action2.execute, version2(version3, options));
     await execute(action2.execute, publish(access, tag, dryrun, options));
-    action2.output("version", version3);
   } catch (error) {
     action2.fail(`An expected error occured: ${error}`);
   }
